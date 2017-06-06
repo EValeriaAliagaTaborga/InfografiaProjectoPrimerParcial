@@ -1,4 +1,5 @@
 package paint;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -17,28 +18,42 @@ public class Grilla extends JComponent implements MouseInputListener {
 	Dimension preferredSize = new Dimension(500, 500);
 
 	Color gridColor;
+	
+	Color pencil;
+
+	boolean[][] clon = new boolean[2000][2000];
 
 	public Grilla(Main controller) {
 		this.controller = controller;
 
 		addMouseListener(this);
 		addMouseMotionListener(this);
-		setBackground(Color.WHITE);
-		setOpaque(true);
+		// setBackground(Color.WHITE);
+		// setOpaque(true);
+		setVisible(true);
+
 	}
 
 	public Dimension getPreferredSize() {
 		return preferredSize;
 	}
 
+	public Color getPencil() {
+		return pencil;
+	}
+
+	public void setPencil(Color pencil) {
+		this.pencil = pencil;
+	}
+
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		// COLOR DEL BACKGROUND SI ESTA OPACO
-		if (isOpaque()) {
-			g.setColor(getBackground());
-			g.fillRect(0, 0, getWidth(), getHeight());
-		
-		}
+		// if (isOpaque()) {
+		// g.setColor(getBackground());
+		// g.fillRect(0, 0, getWidth(), getHeight());
+		//
+		// }
 
 		// COLOR DE GRID
 		g.setColor(Color.GRAY);
@@ -46,12 +61,27 @@ public class Grilla extends JComponent implements MouseInputListener {
 
 		// SI HAY UN PUNTO SE PINTA UN CUADRADO.
 		if (point != null) {
-			g.setColor(getForeground());
-			int coordeX = (point.x)/20;
-			int coordeY = (point.y)/20;
-			g.fillRect(coordeX*20, coordeY*20, 20, 20);
-			g.fillRect(3*20, 3*20, 20, 20);
+			g.setColor(Color.BLACK);
+			int coordeX = (point.x) / 20;
+			int coordeY = (point.y) / 20;
+			g.fillRect(coordeX * 20, coordeY * 20, 20, 20);
+
+			// DESPUÉS DE PINTAR EL NUEVO CUADRADO SE GUARDA Y SE VUELVEN A
+			// PINTAR TODOS
 			
+			//CLON DE BOOLEANS PARA GRILLA
+			int x = point.x;
+			int y = point.y;
+			clon[x][y] = true;
+			for (int i = 0; i < 2000; ++i) {
+				for (int j = 0; j < 2000; j++) {
+					if (clon[i][j] == true) {
+						int a = i / 20;
+						int b = j / 20;
+						g.fillRect(a*20, b*20, 20, 20);
+					}
+				}
+			}
 		}
 	}
 
@@ -63,14 +93,14 @@ public class Grilla extends JComponent implements MouseInputListener {
 		int lastX = getWidth() - insets.right;
 		int lastY = getHeight() - insets.bottom;
 
-		//LINEAS VERTICALES
+		// LINEAS VERTICALES
 		int x = firstX;
 		while (x < lastX) {
 			g.drawLine(x, firstY, x, lastY);
 			x += gridSpace;
 		}
 
-		//LINEAS HORIZONTALES.
+		// LINEAS HORIZONTALES.
 		int y = firstY;
 		while (y < lastY) {
 			g.drawLine(firstX, y, lastX, y);

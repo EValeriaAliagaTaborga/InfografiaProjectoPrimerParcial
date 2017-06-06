@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -26,6 +27,34 @@ public class Main {
 	private JLabel label;
 
 	private Point puntoClick, puntoCurso;
+	
+	int x1 = 0;
+	int y1 = 1;
+	int x2 = 20;
+	int y2 = 20; 
+	
+	public void pintarLineaDDA(Graphics g) {
+		int dx = x2 - x1;
+		int dy = y2 - y1;
+		int steps, k;
+		float xIncrement, yIncrement, x = x1, y =y1;
+		if (Math.abs(dx) > Math.abs(dy)) {
+			steps = Math.abs(dx);
+		} else {
+			steps = Math.abs(dy);
+			xIncrement = dx / (float) steps;
+			yIncrement = dy / (float) steps;
+			x = x1;
+			y = y1;
+
+			for (k = 0; k <= steps; k++) {
+				x += xIncrement;
+				y += yIncrement;
+				g.fillRect((int) x, (int) y, 20, 20);
+
+			}
+		}
+	}
 
 	private void buildUI(Container container) {
 		container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
@@ -93,6 +122,7 @@ public class Main {
 		Main controller = new Main();
 		controller.buildUI(frame.getContentPane());
 		
+		
 //		PARA CREAR EL PANEL DE BOTONES
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
@@ -101,27 +131,37 @@ public class Main {
 //		PARA CREAR BOTONES Y SUS CARACTERISTICAS
 		JButton b1 = new JButton("Línea con DDA");
 		b1.setBounds(0,0, 80, 30);
-		b1.setBackground(Color.yellow);
+		
 		JButton b2 = new JButton("Línea con Bresenham");
 		b2.setBounds(0, 0, 80, 30);
-		b2.setBackground(Color.green);
+		
+		JButton b3 = new JButton("Negro");
+		b2.setBounds(0, 0, 80, 30);
+		
+		JButton b4 = new JButton("Rojo");
+		b2.setBounds(0, 0, 80, 30);
+		
+		JButton b5 = new JButton("Cyan");
+		b2.setBounds(0, 0, 80, 30);
 		
 //		ACTIONLISTENERS PARA LOS BOTONES
 		
-//		b1.addActionListener(new ActionListener(){
-//			public void actionPerformed(ActionEvent e){
-//				DDA dda;
-//				dda.pintarLineaDDA(x1, y1, x2, y2, g);
-//			}
-//		});
+		b1.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				
+			}
+		});
 		
-//		b2.addActionListener(new ActionListener(){
-//			public void actionPerformed(ActionEvent e){
-//				Bresenham bre;
-//				bre.line(x, y, x2, y2, g);
-//			}
-//		});
+		b2.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				
+			}
+		});
 		
+		
+//		panel.add(b3);
+//		panel.add(b4);
+//		panel.add(b5);
 		panel.add(b1);
 		panel.add(b2);
 		frame.add(panel);
